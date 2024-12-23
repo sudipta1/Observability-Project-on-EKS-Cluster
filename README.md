@@ -25,14 +25,15 @@ Grafana : Grafana is used to visualise dashboards
 **Step 1 : Installing Kube-prometheus stack using Helm : **
 
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+
 helm repo update
 
 **Step 2 : Deploy the chart into a new namespace "monitoring": **
 
 kubectl create ns monitoring
+
 helm install monitoring prometheus-community/kube-prometheus-stack \
--n monitoring \
--f ./custom_kube_prometheus_stack.yml
+-n monitoring
 
 **Step 3 : Check the installation**
 kubectl get all -n monitoring
