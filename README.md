@@ -22,4 +22,28 @@ Grafana : Grafana is used to visualise dashboards
           We will use PromQL query to fetch the custom metrices from Prometheus
           Grafana uses the API server to fetch the information metrices
 
-ElasticSearch :          
+**Step 1 : Installing Kube-prometheus stack using Helm : **
+
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+**Step 2 : Deploy the chart into a new namespace "monitoring": **
+
+kubectl create ns monitoring
+helm install monitoring prometheus-community/kube-prometheus-stack \
+-n monitoring \
+-f ./custom_kube_prometheus_stack.yml
+
+**Step 3 : Check the installation**
+kubectl get all -n monitoring
+
+Prometheus UI:
+kubectl port-forward service/prometheus-operated -n monitoring 9090:9090
+**Note : you need to pass --address 0.0.0.0 to the above command. Then you can access the UI on instance-ip:port**
+
+Grafana UI: password is prom-operator
+kubectl port-forward service/monitoring-grafana -n monitoring 8080:80
+
+Alertmanager UI:
+kubectl port-forward service/alertmanager-operated -n monitoring 9093:9093
+
